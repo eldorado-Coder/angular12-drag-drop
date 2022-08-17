@@ -1,0 +1,35 @@
+{
+  "name": "@sinequa/ngx-ui-builder",
+  "version": "1.0.0",
+  "author": "Trevion",
+  "description": "An Angular library for creating no-code tools & applications",
+  "keywords": ["no code", "angular", "angular2", "Trevion", "drag and drop", "point and click", "ui builder", "configurable"],
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.schematics.json",
+    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../dist/lib/"
+  },
+  "schematics": "./schematics/collection.json",
+  "ng-add": {
+    "save": "dependencies"
+  },
+  "peerDependencies": {
+    "@angular/common": "^12.2.0",
+    "@angular/core": "^12.2.0",
+    "@ngneat/elf": "^1.0.2",
+    "@ngneat/elf-entities": "^3.0.0",
+    "@ngneat/elf-state-history": "^1.0.1",
+    "@popperjs/core": "^2.11.0",
+    "bootstrap": "^5.1.3",
+    "ngx-drag-drop": "^2.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/bootstrap": "^5.1.6",
+    "@angular/localize": "^12.2.0",
+    "copyfiles": "file:../../node_modules/copyfiles",
+    "typescript": "file:../../node_modules/typescript"
+  }
+}

@@ -1,0 +1,13 @@
+/* when zone is selected apply this style */
+.uib-configurable[selected] {
+  padding: var(--padding);
+
+  .uib-configurable {
+    margin: var(--margin);
+    border-radius: 2px;
+  }
+
+  .uib-container {
+    padding: var(--padding);
+  }
+}

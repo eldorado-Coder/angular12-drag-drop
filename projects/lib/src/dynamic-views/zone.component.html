@@ -1,0 +1,45 @@
+<ng-container
+*ngTemplateOutlet="isArray ? arrayTpl : zoneTpl; context: { $implicit: data, first: 'true' }"
+></ng-container>
+
+<!-- data is an array -->
+<ng-template #arrayTpl let-data>
+  <ng-container *ngFor="let d of data; let index = index; let first = first"
+    [ngTemplateOutlet]="zoneTpl"
+    [ngTemplateOutletContext]="{ $implicit: data, index, first }">
+  </ng-container>
+</ng-template>
+
+<!-- data is a single object -->
+<ng-template #zoneTpl let-data let-index="index" let-first="first">
+
+  <!-- en mode editeur -->
+  <div *ngIf="first && (enabled$ | async)" class="uib-zone"
+    [uib-item]="id"
+    [id]="id"
+    [zone]="id"
+    [templates]="templates"
+    [configurable]="true"
+
+    uib-configurable
+
+    [data]="data"
+    [dataIndex]="index"
+    [conditionsData]="conditionsData"
+    >
+  </div>
+
+  <!-- en mode normal -->
+  <div *ngIf="!first || (enabled$ | async) === false"
+    [uib-item]="id"
+    [templates]="templates"
+    [configurable]="false"
+
+    [data]="data"
+    [dataIndex]="index"
+    [conditionsData]="conditionsData"
+
+    (click)="onItemClicked($event, data, index)">
+  </div>
+
+</ng-template>

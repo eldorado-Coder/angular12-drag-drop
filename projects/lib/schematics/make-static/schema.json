@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsMakeStatic",
+  "title": "Make Static Schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "description": "The path to the configuration (.json) of the application.",
+      "type": "string",
+      "format": "path"
+    },
+    "override": {
+      "description": "If true, will override the source code of the HTML templated rather than generating alternate .static.html files.",
+      "type": "boolean",
+      "default": false
+    },
+    "updateTemplateUrls": {
+      "description": "If true (and if 'override' is false), update the component .ts files to use the .static.html templates",
+      "type": "boolean",
+      "default": true
+    },
+    "commentScssImport": {
+      "description": "If true, comment out the import of the UI Builder stylesheet in the project's stylesheet",
+      "type": "boolean",
+      "default": true
+    },
+    "appModuleDependencies": {
+      "description": "Path to a JSON file mapping a module's name to a list of component types (eg. {PokemonModule: ['pokemon-image', 'pokemon-name']})",
+      "type": "string",
+      "format": "path"
+    },
+    "createBase64Images": {
+      "description": "Detect when the configration contains images encoded as base64 strings and transform them as files in the assets folder",
+      "type": "boolean",
+      "default": true
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    }
+   },
+  "required": [
+    "config"
+  ]
+}

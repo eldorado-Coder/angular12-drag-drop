@@ -1,0 +1,108 @@
+<!-- HEADER -->
+
+<uib-zone id="header">
+  <ng-template uib-template="title" let-config>
+    <h1>{{ config.title }}</h1>
+  </ng-template>
+
+  <ng-template uib-template="searchbar">
+    <input type="text" [(ngModel)]="searchText" (ngModelChange)="search()" placeholder="Search for a Pokemon..." autocomplete="off" spellcheck="false"/>
+  </ng-template>
+
+  <ng-template uib-template="applied-filters">
+    <span *ngFor="let ability of abilities" class="metadata">{{ ability }}</span>
+    <span *ngIf="weight" class="metadata">Weight &lt; {{ weight }}</span>
+    <span *ngIf="experience" class="metadata">XP &lt; {{ experience }}</span>
+  </ng-template>
+
+  <ng-template uib-template="clear-filters">
+    <button *ngIf="search || abilities.length || weight || experience" (click)="clear()">
+      Clear search criteria
+    </button>
+  </ng-template>
+</uib-zone>
+
+<hr />
+
+<div class="main">
+
+  <!-- FILTERS -->
+
+  <div class="p-1 filters">
+    <h3>Filters</h3>
+    <uib-zone id="filters">
+      <ng-template uib-template="range" let-config>
+        <h4>{{ config.field | titlecase }}: {{ this[config.field] }}</h4>
+        <input type="range" min="0"max="200" [(ngModel)]="this[config.field]" (ngModelChange)="search()"/>
+      </ng-template>
+
+      <ng-template uib-template="abilities">
+        <h4>Abilities:</h4>
+        <div *ngFor="let a of allAbilities">
+          <a *ngIf="!abilities.includes(a)" href="#" (click)="selectAbility(a)" class="metadata">{{ a }}</a>
+        </div>
+      </ng-template>
+    </uib-zone>
+  </div>
+
+
+  <!-- RESULTS -->
+
+  <uib-zone id="results" [data]="pokemonService.pokemons$ | async" class="flex-grow-1 d-flex flex-row flex-wrap justify-content-start align-items-start align-content-start">
+
+    <ng-template uib-template="image" display="Image" title="A component to display the picture of a Pokemon" let-data="data">
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{data.id}}.png" [title]="data.name"/>
+    </ng-template>
+
+    <ng-template uib-template="description" display="Description" let-data="data" let-config>
+      {{data.description}}
+    </ng-template>
+
+    <ng-template uib-template="metadata" display="Metadata" let-data="data" let-config>
+      <strong *ngIf="!config.hideField">{{ config.field }}: </strong>
+      <span *ngFor="let meta of asArray(data[config.field])" class="metadata">{{meta}}</span>
+    </ng-template>
+
+  </uib-zone>
+
+</div>
+
+<!-- EDITOR -->
+
+<div class="uib-bootstrap">
+  <!-- bootstrap classes are now allowed here -->
+
+  <uib-toolbar></uib-toolbar>
+
+  <!-- CONFIGURATOR -->
+
+  <uib-configurator>
+    <ng-template uib-template="title" let-context>
+      <label class="form-label" for="title">Title</label>
+      <input class="form-control" id="title"
+        type="text"
+        [(ngModel)]="context.config.title"
+        (ngModelChangeDebounced)="context.configChanged()"
+      />
+      <hr />
+    </ng-template>
+
+    <ng-template uib-template="metadata" let-context>
+      <div class="mb-3">
+        <label for="metadata" class="form-label">Metadata</label>
+        <select [(ngModel)]="context.config.field" id="metadata" class="form-select" (ngModelChange)="context.configChanged()">
+          <option value="name">Name</option>
+          <option value="weight">Weight</option>
+          <option value="experience">Experience</option>
+          <option value="abilities">Abilities</option>
+        </select>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="hideField" [(ngModel)]="!!context.config.hideField" (ngModelChange)="context.configChanged()">
+        <label class="form-check-label" for="hideField">Hide field</label>
+      </div>
+      <hr />
+    </ng-template>
+
+  </uib-configurator>
+</div>
